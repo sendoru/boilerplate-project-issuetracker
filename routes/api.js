@@ -84,6 +84,9 @@ module.exports = function (app, db) {
       if (Object.keys(body).length <= 1) {
         return res.json({ error: 'no update field(s) sent', _id: body._id });
       }
+      if (!objectId.isValid(body._id)) {
+        return res.json({ error: 'could not update' });
+      }
 
       const db_query = {
         project: project,
@@ -122,6 +125,9 @@ module.exports = function (app, db) {
       }
       if (!body._id) {
         return res.json({ error: 'missing _id' });
+      }
+      if (!objectId.isValid(body._id)) {
+        return res.json({ error: 'could not delete' });
       }
 
       db.deleteOne({
